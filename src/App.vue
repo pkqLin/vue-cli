@@ -8,3 +8,9 @@
   </div>
 </template>
 
+<STYLE>
+#app{
+  height: 100%;
+}
+</STYLE>
+
