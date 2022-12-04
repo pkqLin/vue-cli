@@ -129,6 +129,7 @@
 <script>
 // @ is an alias to /src
 import HelloWorld from '@/components/HelloWorld.vue'
+import request from "@/utils/request";
 
 export default {
   name: 'HomeView',
@@ -146,11 +147,7 @@ export default {
   },
   created() {
     //请求分页查询数据
-    fetch("http://localhost:8091/sysUser/page?pageNum="+this.pageNum+"&pageSize=2"+this.pageSize).then(res => res.json()).then(res=>{
-      console.log(res);
-      this.tableData=res.data;
-      this.total=res.total;
-    })
+      this.load();
   },
 
   methods:{
@@ -167,9 +164,22 @@ export default {
       }
     },
     load(){
-      fetch("http://localhost:8091/sysUser/page?pageNum="+this.pageNum+"&pageSize="+this.pageSize).then(res => res.json()).then(res=>{
+     /* fetch("http://localhost:8091/sysUser/page?pageNum="+this.pageNum+"&pageSize="+this.pageSize).then(res => res.json()).then(res=>{
         this.tableData=res.data;
         this.total=res.total;
+      })*/
+      request.get("http://localhost:8091/sysUser/page",{
+        params:{
+          pageNum:this.pageNum,
+          pageSize:this.pageSize
+        }
+      }).then(res=>{
+        console.log(res)
+        this.tableData=res.records;
+        this.total= res.total;
+        this.pageSize=res.size;
+        this.pageNum=res.pages;
+
       })
     },
     handleSizeChange(pageSize){
