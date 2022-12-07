@@ -30,7 +30,8 @@
             </el-menu-item-group>
           </el-submenu>
           <el-submenu index="2">
-            <template slot="title"><i class="el-icon-menu"></i> <span>导航二</span></template>
+            <template slot="title"><i class="el-icon-menu"></i> <span>导航二11</span></template>
+
             <el-menu-item-group>
               <template slot="title">分组一</template>
               <el-menu-item index="2-1">选项1</el-menu-item>
