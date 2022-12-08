@@ -66,10 +66,26 @@
 
 
         <el-main>
+          <!-- <div style="padding: 10px 0;">
+            <el-breadcrump separator="/">
+              <el-breadcrump-item :to="{ path: '/' }">首页</el-breadcrump-item>
+              <el-breadcrump-item>用户管理</el-breadcrump-item>
+            </el-breadcrump>
+          </div> -->
+
           <div style="padding: 10px 0;">
-            <el-input style="width: 200px;" suffix-icon="el-icon-search"></el-input><el-button style="margin-left: 5px"
-              type="primary">搜索</el-button>
+            <el-input style="width: 200px;" placeholder="请输入名称" v-model="username"
+              suffix-icon="el-icon-search"></el-input>
+            <el-button style="margin-left: 5px" type="primary" @click="load">搜索</el-button>
           </div>
+
+          <div style="padding: 10px 0;">
+            <el-button type="primary">新增<i class="el-icon-circle-plus-outline"></i></el-button>
+            <el-button type="danger">批量删除<i class="el-icon-remove-outline"></i></el-button>
+            <el-button type="primary">导入<i class="el-icon-bottom"></i></el-button>
+            <el-button type="primary">导出<i class="el-icon-top"></i></el-button>
+          </div>
+
           <el-table :data="tableData">
             <el-table-column prop="username" label="用户名" width="100">
             </el-table-column>
@@ -136,7 +152,8 @@ export default {
       collapseBtnClass: "el-icon-s-fold",
       isCollapse: false,
       sidewidth: 200,
-      textShow: true
+      textShow: true,
+      username: "",
     }
   },
   created() {
@@ -165,7 +182,8 @@ export default {
       request.get("http://localhost:8091/sysUser/page", {
         params: {
           pageNum: this.pageNum,
-          pageSize: this.pageSize
+          pageSize: this.pageSize,
+          username: this.username
         }
       }).then(res => {
         console.log(res)
@@ -173,7 +191,6 @@ export default {
         this.total = res.total;
         this.pageSize = res.size;
         this.pageNum = res.pages;
-
       })
     },
     handleSizeChange(pageSize) {
