@@ -77,16 +77,19 @@
             <el-input style="width: 200px;" placeholder="请输入名称" v-model="username"
               suffix-icon="el-icon-search"></el-input>
             <el-button style="margin-left: 5px" type="primary" @click="load">搜索</el-button>
+            <el-button style="margin-left: 5px" type="warning" @click="reset">重置</el-button>
           </div>
 
           <div style="padding: 10px 0;">
-            <el-button type="primary">新增<i class="el-icon-circle-plus-outline"></i></el-button>
+            <el-button type="primary" @click="add">新增<i class="el-icon-circle-plus-outline"></i></el-button>
             <el-button type="danger">批量删除<i class="el-icon-remove-outline"></i></el-button>
             <el-button type="primary">导入<i class="el-icon-bottom"></i></el-button>
             <el-button type="primary">导出<i class="el-icon-top"></i></el-button>
           </div>
 
-          <el-table :data="tableData">
+          <el-table :data="tableData" border stripe @selection-change="handleCheck">
+            <el-table-column type="selection" width="55">
+            </el-table-column>
             <el-table-column prop="username" label="用户名" width="100">
             </el-table-column>
             <el-table-column prop="nickname" label="昵称" width="100">
@@ -99,8 +102,12 @@
             </el-table-column>
 
             <el-table-column label="操作" width="200" align="center">
-              <el-button type="success" size="mini">编辑<i class="el-icon-edit"></i></el-button>
-              <el-button type="danger" size="mini">删除<i class="el-icon-remove-outline"></i></el-button>
+              <template slot-scope="scope">
+                <el-button type="success" size="mini" @click="handleEdit(scope.row)">编辑<i
+                    class="el-icon-edit"></i></el-button>
+                <el-button type="danger" size="mini" @click="handleDel(scope.row)">删除<i
+                    class="el-icon-remove-outline"></i></el-button>
+              </template>
             </el-table-column>
           </el-table>
           <div style="padding: 10px 0;">
@@ -112,9 +119,33 @@
               :total="total">
             </el-pagination>
           </div>
+
+          <el-dialog title="用户信息" :visible.sync="dialogTableVisible">
+            <el-form :model="form" label-width="80px">
+              <el-form-item label="用户名">
+                <el-input v-model="form.username" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="昵称">
+                <el-input v-model="form.nickname" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="邮箱">
+                <el-input v-model="form.email" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="电话">
+                <el-input v-model="form.phone" autocomplete="off"></el-input>
+              </el-form-item>
+              <el-form-item label="地址">
+                <el-input v-model="form.address" autocomplete="off"></el-input>
+              </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+              <el-button @click="dialogFormVisible = false">取 消</el-button>
+              <el-button type="primary" @click="saveUser">确 定</el-button>
+            </div>
+          </el-dialog>
+
+
         </el-main>
-
-
       </el-container>
     </el-container>
   </div>
@@ -154,6 +185,8 @@ export default {
       sidewidth: 200,
       textShow: true,
       username: "",
+      dialogTableVisible: false,
+      form: {},
     }
   },
   created() {
@@ -179,7 +212,7 @@ export default {
          this.tableData=res.data;
          this.total=res.total;
        })*/
-      request.get("http://localhost:8091/sysUser/page", {
+      request.get("/sysUser/page", {
         params: {
           pageNum: this.pageNum,
           pageSize: this.pageSize,
@@ -192,6 +225,33 @@ export default {
         this.pageSize = res.size;
         this.pageNum = res.pages;
       })
+    },
+    reset() {
+      this.username = "";
+      this.load();
+    },
+    saveUser() {
+      request.post("/sysUser/insert", this.form).then(res => {
+        if (res) {
+          this.$message.success("保存成功！");
+          this.dialogTableVisible = false;
+        } else {
+          this.$message.error("保存失败");
+        }
+      })
+    },
+    add() {
+      this.dialogTableVisible = true;
+    },
+    handleEdit(row) {
+      this.dialogTableVisible = true;
+      this.form = row;
+    },
+    handleDel(row) {
+
+    },
+    handleCheck(row) {
+      console.log(row)
     },
     handleSizeChange(pageSize) {
       this.pageSize = pageSize;
