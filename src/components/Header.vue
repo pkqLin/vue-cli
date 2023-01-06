@@ -7,7 +7,9 @@
             <el-breadcrumb separator="/" style="display: inline-block;margin-left: 10px;">
                 <!-- <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
                 <el-breadcrumb-item>用户管理</el-breadcrumb-item> -->
-                <el-breadcrumb-item :to="item.path" v-for="item in paths">{{ item.name }}</el-breadcrumb-item>
+                <el-breadcrumb-item :to="'/'">首页</el-breadcrumb-item>
+                <el-breadcrumb-item>{{ currentPathName }}</el-breadcrumb-item>
+                <!-- <el-breadcrumb-item :to="item.path" v-for="item in paths">{{ item.name }}</el-breadcrumb-item> -->
             </el-breadcrumb>
 
         </div>
@@ -28,13 +30,24 @@ export default {
         collapseBtnClass: String,
         textShow: Boolean
     },
-    data() {
-        return {
-            paths: [],
+    // data() {
+    //     return {
+    //         paths: [],
+    //         pathName: ""
+    //     }
+    // },
+    // created() {
+    //     console.log(this.$router);
+    // },
+    computed: {
+        currentPathName() {
+            return this.$store.state.currentPathName;
         }
     },
-    created() {
-        console.log(this.$router);
+    watch: {
+        currentPathName(newVal, oldVal) {
+            console.log(newVal)
+        }
     }
 }
 </script>

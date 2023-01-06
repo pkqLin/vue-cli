@@ -1,3 +1,4 @@
+import store from '@/store'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
@@ -32,6 +33,13 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  localStorage.setItem('currentPathName', to.name)
+  // store.commit('setPath')
+  store.commit('setPath')
+  next()
 })
 
 export default router
