@@ -12,8 +12,12 @@
         <div style="padding: 10px 0;">
             <el-button type="primary" @click="add">新增<i class="el-icon-circle-plus-outline"></i></el-button>
             <el-button type="danger">批量删除<i class="el-icon-remove-outline"></i></el-button>
-            <el-button type="primary">导入<i class="el-icon-bottom"></i></el-button>
-            <el-button type="primary">导出<i class="el-icon-top"></i></el-button>
+            <el-upload :action="'http://localhost:8091/sysUser/import'" :show-file-list="false" accept="xlsx"
+                :on-success="handleExcelImportSuccess" style="display: inline-block">
+                <el-button type="primary" class="ml-5">导入 <i class="el-icon-bottom"></i></el-button>
+            </el-upload>
+            <!-- <el-button type="primary">导入<i class="el-icon-bottom"></i></el-button> -->
+            <el-button type="primary" @click="exp" class="ml-5">导出<i class="el-icon-top"></i></el-button>
         </div>
 
         <el-table :data="tableData" border stripe @selection-change="handleCheck">
@@ -49,7 +53,7 @@
             @current-change="handleCurrentChange"
             :current-page="currentPage4"-->
             <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageNum"
-                :page-sizes="[5, 10, 15, 20]" :page-size="pageSize" layout="total, sizes, prev, pager, next, jumper"
+                :page-size="pageSize" :page-sizes="[2, 5, 10, 20]" layout="total, sizes, prev, pager, next, jumper"
                 :total="total">
             </el-pagination>
         </div>
@@ -89,7 +93,7 @@ export default {
             tableData: [],
             total: 0,
             pageNum: 1,
-            pageSize: 2,
+            pageSize: 5,
             username: "",
             dialogTableVisible: false,
             form: {},
@@ -117,11 +121,11 @@ export default {
                     username: this.username
                 }
             }).then(res => {
-                console.log(res)
-                this.tableData = res.records;
-                this.total = res.total;
-                this.pageSize = res.size;
-                this.pageNum = res.pages;
+                debugger
+                this.tableData = res.data.records;
+                this.total = res.data.total;
+                // this.pageSize = res.data.size;
+                // this.pageNum = res.data.pages;
             })
         },
         reset() {
@@ -149,7 +153,7 @@ export default {
             this.form = row;
         },
         handleDel(id) {
-            request.delete("/sysUser/" + id).then(res => {
+            this.request.delete("/sysUser/" + id).then(res => {
                 if (res) {
                     this.$message.success("删除成功！");
                     this.dialogTableVisible = false;
@@ -171,6 +175,9 @@ export default {
             this.pageNum = pageNum;
             this.load();
         },
+        exp() {
+            window.open("http://localhost:8091/sysUser/export")
+        }
     },
 }
 </script>
