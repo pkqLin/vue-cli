@@ -12,11 +12,13 @@
         <div style="padding: 10px 0;">
             <el-button type="primary" @click="add">新增<i class="el-icon-circle-plus-outline"></i></el-button>
             <el-button type="danger">批量删除<i class="el-icon-remove-outline"></i></el-button>
+
             <el-upload :action="'http://localhost:8091/sysUser/import'" :show-file-list="false" accept="xlsx"
                 :on-success="handleExcelImportSuccess" style="display: inline-block">
-                <el-button type="primary" class="ml-5">导入 <i class="el-icon-bottom"></i></el-button>
+                <el-button type="warning" class="ml-5">导入 <i class="el-icon-bottom"></i></el-button>
             </el-upload>
             <!-- <el-button type="primary">导入<i class="el-icon-bottom"></i></el-button> -->
+
             <el-button type="primary" @click="exp" class="ml-5">导出<i class="el-icon-top"></i></el-button>
         </div>
 
@@ -110,10 +112,6 @@ export default {
     // },
     methods: {
         load() {
-            /* fetch("http://localhost:8091/sysUser/page?pageNum="+this.pageNum+"&pageSize="+this.pageSize).then(res => res.json()).then(res=>{
-               this.tableData=res.data;
-               this.total=res.total;
-             })*/
             request.get("/sysUser/page", {
                 params: {
                     pageNum: this.pageNum,
@@ -121,11 +119,8 @@ export default {
                     username: this.username
                 }
             }).then(res => {
-                debugger
                 this.tableData = res.data.records;
                 this.total = res.data.total;
-                // this.pageSize = res.data.size;
-                // this.pageNum = res.data.pages;
             })
         },
         reset() {
@@ -133,7 +128,7 @@ export default {
             this.load();
         },
         saveUser() {
-            request.post("/sysUser/insert", this.form).then(res => {
+            request.post("/sysUser/saveOrUpdate", this.form).then(res => {
                 if (res) {
                     this.$message.success("保存成功！");
                     this.dialogTableVisible = false;
@@ -177,6 +172,10 @@ export default {
         },
         exp() {
             window.open("http://localhost:8091/sysUser/export")
+        },
+        handleExcelImportSuccess() {
+            this.$message.success("导入成功")
+            this.load()
         }
     },
 }
