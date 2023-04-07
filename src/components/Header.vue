@@ -11,10 +11,11 @@
         </div>
         <el-dropdown style="width: 150px;cursor: pointer; text-align: right">
             <div style="display: inline-block">
-                <!-- <img :src="user.avatarUrl" alt=""
-                    style="width: 30px; border-radius: 50%; position: relative; top: 10px; right: 5px"> -->
+               <img :src="user.avatarUrl" alt=""
+                        style="width: 30px; border-radius: 50%; position: relative; top: 10px; right: 5px">
                 <span>{{ user.nickname }}</span><i class="el-icon-arrow-down" style="margin-left: 5px"></i>
             </div>
+
             <el-dropdown-menu slot="dropdown" style="width: 100px; text-align: center">
                 <el-dropdown-item style="font-size: 14px; padding: 5px 0">
                     <router-link to="/person">个人信息</router-link>
@@ -29,16 +30,16 @@
 
 <script>
 
-
 export default {
     name: "Header",
     props: {
         collapseBtnClass: String,
         textShow: Boolean,
+        user: Object
     },
     data() {
         return {
-            user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {}
+            // user: localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")) : {}
         }
     },
     // created() {
@@ -67,3 +68,13 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.avatar-uploader {
+  text-align: center;
+  padding-bottom: 10px;
+}
+.router-link-active {
+   text-decoration: none;
+}
+</style>
