@@ -18,6 +18,12 @@ const routes = [
         path: 'file', name: '文件管理', component: () => import('../views/File.vue')
       },
       {
+        path: 'role', name: '角色管理', component: () => import('../views/Role.vue')
+      },
+      {
+        path: 'menu', name: '菜单管理', component: () => import('../views/Menu.vue')
+      },
+      {
         path: 'home', name: '首页 ', component: () => import('../views/Home.vue')
       },
       {
