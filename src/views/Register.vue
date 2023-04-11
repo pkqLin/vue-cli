@@ -27,7 +27,7 @@
 </template>
 
 <script>
-// import { setRoutes } from "@/router";
+import { setRoutes } from "@/router";
 
 export default {
     name: "Register",

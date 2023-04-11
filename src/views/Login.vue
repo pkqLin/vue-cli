@@ -21,7 +21,7 @@
 </template>
 
 <script>
-// import { setRoutes } from "@/router";
+import { setRoutes } from "@/router";
 
 export default {
     name: "Login",
@@ -47,9 +47,9 @@ export default {
                     this.request.post("/sysUser/login", this.user).then(res => {
                         if (res.code === '200') {
                             localStorage.setItem("user", JSON.stringify(res.data))  // 存储用户信息到浏览器
-                            // localStorage.setItem("menus", JSON.stringify(res.data.menus))  // 存储用户信息到浏览器
+                            localStorage.setItem("menus", JSON.stringify(res.data.menus))  // 存储用户信息到浏览器
                             // 动态设置当前用户的路由
-                            // setRoutes()
+                            setRoutes()
                             this.$message.success("登录成功")
 
                             // if (res.data.role === 'ROLE_STUDENT') {

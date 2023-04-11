@@ -3,7 +3,7 @@
     <el-container style="height: 100%;">
       <el-aside :width="sidewidth + 'px'"
                 style="background-color: rgb(238, 241, 246);height: 100%;box-shadow: rgb(0,21,41) 2px 0px 6px;">
-        <Asides :isCollapse="isCollapse" :textShow="textShow"/>
+        <Asides :isCollapse="isCollapse" :textShow="textShow" />
       </el-aside>
 
       <el-container>

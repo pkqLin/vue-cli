@@ -3,8 +3,7 @@
 
 
         <div style="padding: 10px 0;">
-            <el-input style="width: 200px;" placeholder="请输入名称" v-model="username"
-                suffix-icon="el-icon-search"></el-input>
+            <el-input style="width: 200px;" placeholder="请输入名称" v-model="username" suffix-icon="el-icon-search"></el-input>
             <el-button style="margin-left: 5px" type="primary" @click="load">搜索</el-button>
             <el-button style="margin-left: 5px" type="warning" @click="reset">重置</el-button>
         </div>
@@ -27,6 +26,14 @@
             </el-table-column>
             <el-table-column prop="username" label="用户名" width="100">
             </el-table-column>
+            <el-table-column prop="role" label="角色">
+                <template slot-scope="scope">
+                    <el-tag type="primary" v-if="scope.row.role === 'ROLE_ADMIN'">管理员</el-tag>
+                    <el-tag type="warning" v-if="scope.row.role === 'ROLE_TEACHER'">老师</el-tag>
+                    <el-tag type="success" v-if="scope.row.role === 'ROLE_STUDENT'">学生</el-tag>
+                    <el-tag type="success" v-if="scope.row.role === 'ROLE_USER'">普通用户</el-tag>
+                </template>
+            </el-table-column>
             <el-table-column prop="nickname" label="昵称" width="100">
             </el-table-column>
             <el-table-column prop="email" label="邮箱">
@@ -41,8 +48,8 @@
                     <el-button type="success" size="mini" @click="handleEdit(scope.row)">编辑<i
                             class="el-icon-edit"></i></el-button>
 
-                    <el-popconfirm confirm-button-text='确定' cancel-button-text='我再想想' icon="el-icon-info"
-                        icon-color="red" title="这是一段内容确定删除吗？" @confirm="handleDel(scope.row.id)">
+                    <el-popconfirm confirm-button-text='确定' cancel-button-text='我再想想' icon="el-icon-info" icon-color="red"
+                        title="这是一段内容确定删除吗？" @confirm="handleDel(scope.row.id)">
                         <el-button type="danger" slot="reference" size="mini" @click="">删除<i
                                 class="el-icon-remove-outline"></i></el-button>
                     </el-popconfirm>
@@ -67,6 +74,11 @@
                 </el-form-item>
                 <el-form-item label="昵称">
                     <el-input v-model="form.nickname" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item label="角色">
+                    <el-select clearable v-model="form.role" placeholder="请选择角色" style="width: 100%">
+                        <el-option v-for="item in roles" :key="item.name" :label="item.name" :value="item.flag"></el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item label="邮箱">
                     <el-input v-model="form.email" autocomplete="off"></el-input>
@@ -99,6 +111,7 @@ export default {
             username: "",
             dialogTableVisible: false,
             form: {},
+            roles: []
 
         }
     },
@@ -121,6 +134,10 @@ export default {
             }).then(res => {
                 this.tableData = res.data.records;
                 this.total = res.data.total;
+            })
+
+            this.request.get("/role").then(res => {
+                this.roles = res.data
             })
         },
         reset() {
