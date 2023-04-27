@@ -30,6 +30,7 @@
 
 <script>
 
+import router,{resetRouter} from '@/router';
 export default {
     name: "Header",
     props: {
@@ -63,7 +64,10 @@ export default {
         logout() {
             this.$router.push("/login");
             localStorage.removeItem("user");
-            this.$message.success("退出成功")
+            localStorage.removeItem("menus");
+            this.$message.success("退出成功");
+            //重置下路由
+            resetRouter();
         }
     }
 }

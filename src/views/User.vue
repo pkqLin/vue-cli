@@ -12,7 +12,7 @@
             <el-button type="primary" @click="add">新增<i class="el-icon-circle-plus-outline"></i></el-button>
             <el-button type="danger">批量删除<i class="el-icon-remove-outline"></i></el-button>
 
-            <el-upload :action="'http://localhost:8091/sysUser/import'" :show-file-list="false" accept="xlsx"
+            <el-upload :action="'http://'+serverIp+':8091/sysUser/import'" :show-file-list="false" accept="xlsx"
                 :on-success="handleExcelImportSuccess" style="display: inline-block">
                 <el-button type="warning" class="ml-5">导入 <i class="el-icon-bottom"></i></el-button>
             </el-upload>
@@ -100,6 +100,7 @@
 
 <script>
 import request from "@/utils/request";
+import {serverIp} from "../../public/config";
 export default {
     name: "User",
     data() {
@@ -111,7 +112,8 @@ export default {
             username: "",
             dialogTableVisible: false,
             form: {},
-            roles: []
+            roles: [],
+            serverIp: serverIp,
 
         }
     },
