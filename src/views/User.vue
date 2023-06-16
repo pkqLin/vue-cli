@@ -108,7 +108,7 @@ export default {
             tableData: [],
             total: 0,
             pageNum: 1,
-            pageSize: 5,
+            pageSize: 10,
             username: "",
             dialogTableVisible: false,
             form: {},
@@ -154,9 +154,11 @@ export default {
                 } else {
                     this.$message.error("保存失败");
                 }
-            })
+            });
+            this,load();
         },
         add() {
+            this.form = {};
             this.dialogTableVisible = true;
         },
         closeUser() {
@@ -178,8 +180,6 @@ export default {
             })
         },
         handleCheck(row) {
-            this.$alert(row)
-            console.log(row);
         },
         handleSizeChange(pageSize) {
             this.pageSize = pageSize;
